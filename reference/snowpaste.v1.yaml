@@ -4,7 +4,7 @@ info:
   version: '1.0'
   description: A food delivery application
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://localhost:5000'
 paths:
   /restaurants:
     get:
@@ -36,6 +36,30 @@ paths:
         - app_id: []
       parameters: []
     parameters: []
+  '/restaurants/{restaurantId}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurantId
+        in: path
+        required: true
+    get:
+      summary: restaurant
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: get-restaurants-restaurantid
+      description: get one specific restaurant with restaurant Id
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: restaurantId
+          description: restaurant Id
 components:
   schemas: {}
   securitySchemes:
