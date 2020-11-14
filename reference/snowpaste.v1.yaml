@@ -2,64 +2,68 @@ openapi: 3.0.0
 info:
   title: SnowPasteDeliveryAPI
   version: '1.0'
-  description: A food delivery application
+  description: An API for a food delivery application. For NEU CS5500 project.
 servers:
   - url: 'http://localhost:5000'
 paths:
   /restaurants:
     get:
-      summary: restaurants
+      summary: get all restaurants
       tags:
-        - Restaurants Endpoint
+        - restaurants
       responses:
         '200':
           description: OK
-      operationId: get-Restaurants
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
-            examples: {}
-          application/xml:
-            schema:
-              type: object
-              properties: {}
-          multipart/form-data:
-            schema:
-              type: object
-              properties: {}
-        description: ''
-      description: Get all restaurants
-      security:
-        - app_id: []
-      parameters: []
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  restaurantName:
+                    type: string
+      operationId: get-restaurants
+      description: get all restaurants in the database
     parameters: []
-  '/restaurants/{restaurantId}':
-    parameters:
-      - schema:
-          type: string
-        name: restaurantId
-        in: path
-        required: true
+  '/orders/{orderId}':
     get:
-      summary: restaurant
-      tags: []
+      summary: get an order with orderId
+      tags:
+        - orders
       responses:
         '200':
           description: OK
         '404':
           description: Not Found
-      operationId: get-restaurants-restaurantid
-      description: get one specific restaurant with restaurant Id
-      parameters:
-        - schema:
-            type: string
-            format: uuid
-          in: query
-          name: restaurantId
-          description: restaurant Id
+      operationId: getOrder
+      description: get an order with orderId
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: orderId
+        in: path
+        description: Id of order to get
+        required: true
+  '/restaurants/{restaurantId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: restaurantId
+        in: path
+        required: true
+        description: Id of restaurant to get
+    get:
+      summary: get a restaurant with restaurantId
+      tags:
+        - restaurants
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: getRestaurant
+      description: get a restaurant with restaurantId
 components:
   schemas: {}
   securitySchemes:
@@ -68,4 +72,5 @@ components:
       type: apiKey
       in: query
 tags:
-  - name: Restaurants Endpoint
+  - name: restaurants
+  - name: orders
