@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: SnowPasteDeliveryAPI
+  version: '1.0'
+  description: A food delivery application
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /restaurants:
+    get:
+      summary: restaurants
+      tags:
+        - Restaurants Endpoint
+      responses:
+        '200':
+          description: OK
+      operationId: get-Restaurants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples: {}
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+      description: Get all restaurants
+      security:
+        - app_id: []
+      parameters: []
+    parameters: []
+components:
+  schemas: {}
+  securitySchemes:
+    app_id:
+      name: appid
+      type: apiKey
+      in: query
+tags:
+  - name: Restaurants Endpoint
