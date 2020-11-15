@@ -22,7 +22,7 @@ paths:
                   restaurantName:
                     type: string
       operationId: get-restaurants
-      description: get all restaurants in the database
+      description: get all restaurants in the database. Here.
     parameters: []
   '/orders/{orderId}':
     get:
