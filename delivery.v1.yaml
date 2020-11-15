@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  title: delivery
+  version: '1.0'
+  description: An API for food delivery application
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  '/driver/take_an_order/{driver_id}/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: driver_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    post:
+      summary: driver takes a new order
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+      operationId: post-driver-take_an_order-driver_id-order_id
+      description: A driver takes a new order. Add the new order to the driver's current order list.
+  '/driver/mark_a_completed_order/{driver_id}/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: driver_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: driver mark an order as completed
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+      operationId: put-driver-mark_a_completed_order-driver_id-order_id
+      description: 'A driver mark an order as completed, remove the order from the current order list and put it into complete order list'
+  '/order/get_order_status/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    get:
+      summary: get order status
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderStatus:
+                    type: string
+                    description: |
+                      status should be one of the following: PROCESSING, PREPARING, WAITING_FOR_DRIVER, PICKED_UP, DELIVERED, CANCELLED
+                required:
+                  - orderStatus
+              examples: {}
+      operationId: get-order-get_order_status-order_id
+      description: To get the current status of an order
+  '/order/get_order_est_deliver_time/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    get:
+      summary: get order estimated deliver time
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  esitmatedDeliverTime:
+                    type: integer
+      operationId: get-order-get_order_est_deliver_time-order_id
+      description: Get the estimated deliver time of the order
+  '/driver/set_order_status_delivered/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: driver set the order status to be DELIVERED
+      tags:
+        - driver
+      operationId: put-driver-set_order_status-order_id
+      description: 'A driver delivered an order, and set the order status from PRICKED_UP to DELIVERED.'
+      responses:
+        '200':
+          description: OK
+  '/restaurant/set_order_status_preparing/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: restaurant set the status of an order to be PREPARING
+      tags:
+        - restaurant
+      responses:
+        '200':
+          description: OK
+      operationId: put-restaurant-set_order_status-order_id
+      description: 'A restaurant takes an order, and set the status of the order ot be PREPARING'
+  '/driver/set_order_status_picked_up/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: driver set status for an order to be PICKED UP
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+      operationId: put-driver-set_order_status_picked_up-order_id
+      description: 'A driver picked up an order, and set the status of the order from WAITING_FOR_DRIVER to be PICKED UP'
+  /restaurant/set_order_status_waiting:
+    put:
+      summary: restaurant set the status of an order to be WAITING_FOR_DRIVER
+      tags:
+        - restaurant
+      responses:
+        '200':
+          description: OK
+      operationId: put-restaurant-set_order_status_waiting
+      description: 'A restaurant finished the order, and set the order status from PREPARING to be WAITING_FOR_DRIVER'
+  '/customer/cancel_order/{customer_id}/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: customer cancel an order
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_reason:
+                    type: string
+                  order_id:
+                    type: string
+                  restaurant_name:
+                    type: string
+                required:
+                  - error_reason
+                  - order_id
+                  - restaurant_name
+              examples:
+                example-1:
+                  value:
+                    error_reason: 'The restaurant has started preparing your order, your order cannot be cancelled'
+                    order_id: f1695d1dd57602865f0e8141
+                    restaurant_name: Little Chengdu
+      operationId: put-customer-cancel_order-customer_id-order_id
+      description: 'A customer choose to cancel an order. An order can only be cancelled when the status of the order is PROCESSING, otherwise the cancel operation will not be executed.'
+components:
+  schemas: {}
+  securitySchemes:
+    API Key - 1:
+      type: http
+      scheme: basic
+tags:
+  - name: driver
