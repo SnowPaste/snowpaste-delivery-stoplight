@@ -207,6 +207,262 @@ paths:
                     restaurant_name: Little Chengdu
       operationId: put-customer-cancel_order-customer_id-order_id
       description: 'A customer choose to cancel an order. An order can only be cancelled when the status of the order is PROCESSING, otherwise the cancel operation will not be executed.'
+  /customer/get_all_restaurants:
+    get:
+      summary: get all restaurants
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Name:
+                      type: string
+      operationId: get-restaurant-get_all_restaurants
+      description: Get all restaurants in the database
+      tags:
+        - customer
+    parameters: []
+  '/customer/get_menu/{restaurant_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+    get:
+      summary: get menu of the restaurant
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              examples: {}
+      operationId: get-restaurant-restaurantId-get_menu
+      description: Get menu of a specific restaurant
+  '/customer/get_a_restaurant/{restaurant_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+    get:
+      summary: get a restaurant
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      operationId: get-customer-get_a_restaurant-restaurant_id
+      description: get a restaurant with restaurant Id
+  '/customer/get_cart/{customer_id}/{cart_id}':
+    parameters:
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    get:
+      summary: customer gets a cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Not Found
+      operationId: get-customer-get_cart-cart_id
+      description: get a cart object from a customer
+  '/customer/update_cart/{customer_id}/{cart_id}':
+    parameters:
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    put:
+      summary: customer updates a cart
+      operationId: put-customer-update_cart-cart_id
+      responses:
+        '200':
+          description: OK
+      description: A customer wants to update the cart object
+      tags:
+        - customer
+  '/customer/get_cart_items/{customer_id}/{cart_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+    get:
+      summary: customer gets all items in cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      operationId: get-customer-get_cart_items-customer_id-cart_id
+      description: A customer wants to get all items in the cart
+  '/customer/get_cur_total_price/{customer_id}/{cart_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+    get:
+      summary: get current total price of the cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: number
+      operationId: get-customer-get_cur_total_price-customer_id-cart_id
+      description: Customers want to get the current total price of the cart
+  '/customer/set_tip/{customer_id}/{cart_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-customer-set_tip-customer_id-cart_id
+      responses:
+        '200':
+          description: OK
+      description: Customer wants to set tip of the order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: number
+        description: ''
+  '/customer/add_dish/{customer_id}/{cart_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    get:
+      summary: customer adds a dish to cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+      operationId: get-customer-add_dish-customer_id-cart_id-dish_id
+      description: Customer wants to add a dish to current cart
+  '/customer/remove_dish/{customer_id}/{cart_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    put:
+      summary: customer removes dish from cart
+      operationId: put-customer-remove_dish-customer_id-cart_id-dish_id
+      responses:
+        '200':
+          description: OK
+      description: Customer wants to remove a dish from the current cart
+      tags:
+        - customer
+  '/customer/empty_cart/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: put-customer-empty_cart-customer_id
+      responses:
+        '200':
+          description: OK
+      description: Customer wants to empty the current cart
+      tags:
+        - customer
 components:
   schemas: {}
   securitySchemes:
@@ -215,3 +471,5 @@ components:
       scheme: basic
 tags:
   - name: driver
+  - name: restaurant
+  - name: customer
