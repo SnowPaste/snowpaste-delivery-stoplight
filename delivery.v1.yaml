@@ -463,6 +463,41 @@ paths:
       description: Customer wants to empty the current cart
       tags:
         - customer
+  '/restaurant/update_restaurant/{restaurant_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+    put:
+      summary: update a restaurant
+      operationId: put-restaurant-update_restaurant-restaurant_id
+      responses:
+        '200':
+          description: OK
+      tags:
+        - restaurant
+      description: Restaurant wants to update its info
+  '/restaurant/finish_order/{restaurant_id}/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    post:
+      summary: restaurant finishes order
+      operationId: post-restaurant-finish_order-restaurant_id-order_id
+      responses:
+        '200':
+          description: OK
+      description: Restaurant wants to finish an order
 components:
   schemas: {}
   securitySchemes:
