@@ -154,7 +154,7 @@ paths:
           description: Bad Request
       operationId: put-driver-set_order_status_picked_up-order_id
       description: 'A driver picked up an order, and set the status of the order from WAITING_FOR_DRIVER to be PICKED UP'
-  '/restaurant/set_order_status_waiting':
+  /restaurant/set_order_status_waiting:
     put:
       summary: restaurant set the status of an order to be WAITING_FOR_DRIVER
       tags:
@@ -380,7 +380,7 @@ paths:
           description: Bad Request
       operationId: delete-order-delete_order-order_id
       description: Delete an order
-  '/customer/make_order/customer_id/{customer_id}/restaurant_id/{restaurant_id}':
+  '/customer/make_order/{customer_id}/{restaurant_id}':
     parameters:
       - schema:
           type: string
@@ -402,7 +402,7 @@ paths:
         '403':
           description: Forbidden
       operationId: post-customer-make_order-customer_id-customer_id-restaurant_id-restaurant_id
-      description: 'Customer make an order'
+      description: Customer make an order
   '/driver/update_a_driver/{driver_id}':
     parameters:
       - schema:
@@ -459,7 +459,7 @@ paths:
         '403':
           description: Forbidden
       operationId: post-customer-add_customer-customer_id
-      description: 'Add a customer'
+      description: Add a customer
       requestBody:
         content:
           application/json:
@@ -510,7 +510,7 @@ paths:
                         type: string
                       exp_time:
                         type: string
-        description: 'Information for a customer.'
+        description: Information for a customer.
   '/customer/update_customer/{customer_id}':
     parameters:
       - schema:
@@ -528,7 +528,7 @@ paths:
         '403':
           description: Forbidden
       operationId: put-customer-update_customer-customer_id
-      description: 'Update a customer information'
+      description: Update a customer information
       requestBody:
         content:
           application/json:
@@ -579,7 +579,7 @@ paths:
                         type: string
                       billing_address:
                         type: string
-        description: 'Customer information'
+        description: Customer information
   '/cusotmer/delete_a_customer/{customer_id}':
     parameters:
       - schema:
@@ -597,7 +597,7 @@ paths:
         '403':
           description: Forbidden
       operationId: delete-cusotmer-delete_a_customer-customer_id
-      description: 'Delete a customer'
+      description: Delete a customer
   '/customer/add_address/{customer_id}':
     parameters:
       - schema:
@@ -635,7 +635,7 @@ paths:
                       type: string
                     zip:
                       type: string
-        description: 'Information needed for an Address'
+        description: Information needed for an Address
   '/customer/update_address/{customer_id}':
     parameters:
       - schema:
@@ -854,7 +854,7 @@ paths:
                   rating:
                     type: number
       operationId: get-dish-get_dish-dish_id
-      description: 'Get a dish'
+      description: Get a dish
   '/customer/add_a_dish_to_cart/{customer_id}/{dish_id}':
     parameters:
       - schema:
@@ -877,7 +877,7 @@ paths:
         '400':
           description: Bad Request
       operationId: put-customer-add_a_dish_to_cart-customer_id-dish_id
-      description: 'Customer add a dish to their cart'
+      description: Customer add a dish to their cart
   '/restaurant/add_a_dish/{restaurant_id}/{dish_id}':
     parameters:
       - schema:
@@ -900,7 +900,7 @@ paths:
         '400':
           description: Bad Request
       operationId: put-restaurant-add_a_dish-restaurant_id-dish_id
-      description: 'Add a dish to a restaurant'
+      description: Add a dish to a restaurant
   '/customer/delete_a_dish/{customer_id}/{dish_id}':
     parameters:
       - schema:
@@ -924,7 +924,7 @@ paths:
           description: Bad Request
       operationId: delete-customer-delete_a_dish-customer_id-dish_id
       description: Delete a dish from customer's cart
-  '/customer/get_all_restaurants':
+  /customer/get_all_restaurants:
     get:
       summary: get all restaurants
       responses:
@@ -1118,32 +1118,11 @@ paths:
             schema:
               type: number
         description: ''
-  '/customer/add_dish/{customer_id}/{cart_id}/{dish_id}':
-    parameters:
-      - schema:
-          type: string
-        name: customer_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: cart_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: dish_id
-        in: path
-        required: true
-    get:
-      summary: customer adds a dish to cart
-      tags:
-        - customer
-      responses:
-        '200':
-          description: OK
-      operationId: get-customer-add_dish-customer_id-cart_id-dish_id
-      description: Customer wants to add a dish to current cart
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: tip
   '/customer/remove_dish/{customer_id}/{cart_id}/{dish_id}':
     parameters:
       - schema:
@@ -1221,7 +1200,7 @@ paths:
         '200':
           description: OK
       description: Restaurant wants to finish an order
-      tags: 
+      tags:
         - restaurant
 components:
   schemas: {}
@@ -1235,6 +1214,3 @@ tags:
   - name: customer
   - name: order
   - name: dish
-
-
-  
