@@ -116,6 +116,8 @@ paths:
       responses:
         '200':
           description: OK
+        '403':
+          description: Forbidden
   '/restaurant/set_order_status_preparing/{order_id}':
     parameters:
       - schema:
@@ -130,6 +132,8 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       operationId: put-restaurant-set_order_status-order_id
       description: 'A restaurant takes an order, and set the status of the order ot be PREPARING'
   '/driver/set_order_status_picked_up/{order_id}':
@@ -146,9 +150,11 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       operationId: put-driver-set_order_status_picked_up-order_id
       description: 'A driver picked up an order, and set the status of the order from WAITING_FOR_DRIVER to be PICKED UP'
-  /restaurant/set_order_status_waiting:
+  '/restaurant/set_order_status_waiting':
     put:
       summary: restaurant set the status of an order to be WAITING_FOR_DRIVER
       tags:
@@ -156,6 +162,8 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       operationId: put-restaurant-set_order_status_waiting
       description: 'A restaurant finished the order, and set the order status from PREPARING to be WAITING_FOR_DRIVER'
   '/customer/cancel_order/{customer_id}/{order_id}':
@@ -207,7 +215,716 @@ paths:
                     restaurant_name: Little Chengdu
       operationId: put-customer-cancel_order-customer_id-order_id
       description: 'A customer choose to cancel an order. An order can only be cancelled when the status of the order is PROCESSING, otherwise the cancel operation will not be executed.'
-  /customer/get_all_restaurants:
+  '/order/get_an_order/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    get:
+      summary: get an order
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                  create_time:
+                    type: integer
+                  restaurant_name:
+                    type: string
+                  driver:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                      phone_number:
+                        type: integer
+                      car_maker:
+                        type: string
+                      car_model:
+                        type: string
+                  status:
+                    type: string
+                  estimated_deliver_time:
+                    type: string
+                  deliver_time:
+                    type: string
+                  cart:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            price:
+                              type: number
+                      tips:
+                        type: number
+                      total_price:
+                        type: number
+                  customer_name:
+                    type: string
+        '404':
+          description: Not Found
+      operationId: get-order-get_an_order-order_id
+      description: 'Get all the information about a certain order. '
+  '/order/get_orders/{user_id}':
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+    get:
+      summary: get all orders of a user
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        create_time:
+                          type: integer
+                        customer_name:
+                          type: string
+                        restaurant_name:
+                          type: string
+                        driver:
+                          type: object
+                          properties:
+                            first_name:
+                              type: string
+                            phone_number:
+                              type: string
+                            car_maker:
+                              type: string
+                            car_model:
+                              type: string
+                        status:
+                          type: string
+                        estimated_delivery_time:
+                          type: string
+                        cart:
+                          type: object
+                          properties:
+                            items:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  price:
+                                    type: number
+                            tips:
+                              type: number
+                            total_price:
+                              type: number
+        '404':
+          description: Not Found
+      operationId: get-order-get_orders-user_id
+      description: 'Get all orders of a user. May be called by customers, restaurants, '
+  '/order/update_order/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    put:
+      summary: update order
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: put-order-update_order?-order_id
+      description: Update an order
+  '/order/delete_order/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+    delete:
+      summary: delete an order
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: delete-order-delete_order-order_id
+      description: Delete an order
+  '/customer/make_order/customer_id/{customer_id}/restaurant_id/{restaurant_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+    post:
+      summary: customer make an order
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+      operationId: post-customer-make_order-customer_id-customer_id-restaurant_id-restaurant_id
+      description: 'Customer make an order'
+  '/driver/update_a_driver/{driver_id}':
+    parameters:
+      - schema:
+          type: string
+        name: driver_id
+        in: path
+        required: true
+    put:
+      summary: update driver information
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: put-driver-update_a_driver-driver_id
+      description: Update a driver's information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                phone_number:
+                  type: string
+                car_maker:
+                  type: string
+                car_model:
+                  type: string
+                car_licence:
+                  type: string
+        description: 'Body includes all the information entries could be updated. '
+  '/customer/add_customer/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    post:
+      summary: add a customer
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request. Customer already exist.
+        '403':
+          description: Forbidden
+      operationId: post-customer-add_customer-customer_id
+      description: 'Add a customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_name:
+                  type: string
+                password:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                phone_number:
+                  type: string
+                address_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address1:
+                        type: string
+                      address2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                credit_card_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      card_number:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      security_code:
+                        type: string
+                      billing_adress:
+                        type: string
+                      exp_time:
+                        type: string
+        description: 'Information for a customer.'
+  '/customer/update_customer/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    put:
+      summary: update a customer
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+      operationId: put-customer-update_customer-customer_id
+      description: 'Update a customer information'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_name:
+                  type: string
+                password:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                phone_number:
+                  type: string
+                address_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address1:
+                        type: string
+                      address2:
+                        type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                credit_card_list:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      card_number:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      security_code:
+                        type: string
+                      exp_date:
+                        type: string
+                      billing_address:
+                        type: string
+        description: 'Customer information'
+  '/cusotmer/delete_a_customer/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    delete:
+      summary: delete a customer
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+      operationId: delete-cusotmer-delete_a_customer-customer_id
+      description: 'Delete a customer'
+  '/customer/add_address/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    post:
+      summary: add a new address to a customer
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: post-customer-add_address-customer_id
+      description: Add a new address to a customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: object
+                  properties:
+                    address1:
+                      type: string
+                    address2:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zip:
+                      type: string
+        description: 'Information needed for an Address'
+  '/customer/update_address/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    put:
+      summary: update address
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: put-customer-update_address-customer_id
+      description: Update address for customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: object
+                  properties:
+                    address1:
+                      type: string
+                    address2:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zip:
+                      type: string
+  '/customer/delete_address/{customer_id}/{address_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: address_id
+        in: path
+        required: true
+    delete:
+      summary: delete address
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: delete-customer-delete_address-customer_id-address_id
+      description: Customer delete an address
+  '/customer/add_credit_card/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    post:
+      summary: add a new credit card
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: post-customer-add_credit_card-customer_id
+      description: Add a new credit card
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                credit_card:
+                  type: object
+                  properties:
+                    card_number:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    security_code:
+                      type: string
+                    exp_date:
+                      type: string
+                    address:
+                      type: object
+                      properties:
+                        address1:
+                          type: string
+                        address2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        zip:
+                          type: string
+        description: Information of the credit card
+  '/customer/update_credit_card/{customer_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+    put:
+      summary: update credit card information
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+      operationId: put-customer-update_credit_card-customer_id
+      description: Update credit card information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                credit_card:
+                  type: object
+                  properties:
+                    card_number:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    security_code:
+                      type: string
+                    exp_time:
+                      type: string
+                    billing_addresss:
+                      type: object
+                      properties:
+                        address1:
+                          type: string
+                        address2:
+                          type: string
+                        city:
+                          type: string
+                        state:
+                          type: string
+                        zip:
+                          type: string
+        description: New information of the credit card
+  '/customer/delete_credit_card/{customer_id}/{credit_card_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: credit_card_id
+        in: path
+        required: true
+    delete:
+      summary: delete a credit card
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: delete-customer-delete_credit_card-customer_id
+      description: Delete a credit card
+      parameters: []
+  '/dish/get_dish/{dish_id}}':
+    parameters:
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    get:
+      summary: get a dish
+      tags:
+        - dish
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  picture:
+                    type: string
+                  price:
+                    type: number
+                  rating:
+                    type: number
+      operationId: get-dish-get_dish-dish_id
+      description: 'Get a dish'
+  '/customer/add_a_dish_to_cart/{customer_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    put:
+      summary: add a dish to customer cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: put-customer-add_a_dish_to_cart-customer_id-dish_id
+      description: 'Customer add a dish to their cart'
+  '/restaurant/add_a_dish/{restaurant_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    put:
+      summary: add a dish to a restaurant
+      tags:
+        - restaurant
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: put-restaurant-add_a_dish-restaurant_id-dish_id
+      description: 'Add a dish to a restaurant'
+  '/customer/delete_a_dish/{customer_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: customer_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    delete:
+      summary: delete a dish from customer's cart
+      tags:
+        - customer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: delete-customer-delete_a_dish-customer_id-dish_id
+      description: Delete a dish from customer's cart
+  '/customer/get_all_restaurants':
     get:
       summary: get all restaurants
       responses:
@@ -388,6 +1105,8 @@ paths:
         required: true
     post:
       summary: ''
+      tags:
+        - customer
       operationId: post-customer-set_tip-customer_id-cart_id
       responses:
         '200':
@@ -502,6 +1221,8 @@ paths:
         '200':
           description: OK
       description: Restaurant wants to finish an order
+      tags: 
+        - restaurant
 components:
   schemas: {}
   securitySchemes:
@@ -512,3 +1233,8 @@ tags:
   - name: driver
   - name: restaurant
   - name: customer
+  - name: order
+  - name: dish
+
+
+  
