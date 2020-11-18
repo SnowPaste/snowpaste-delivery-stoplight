@@ -1202,6 +1202,29 @@ paths:
       description: Restaurant wants to finish an order
       tags:
         - restaurant
+  '/restaurant/delete_a_dish/{restaurant_id}/{dish_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: dish_id
+        in: path
+        required: true
+    delete:
+      summary: delete a dish from the dishes provided by restaurant
+      tags:
+        - restaurant
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: delete-restaurant-delete_a_dish-restaurant_id-dish_id
+      description: Delete a dish from the dishes provided by a restaurant
 components:
   schemas: {}
   securitySchemes:
