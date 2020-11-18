@@ -220,7 +220,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    Name:
+                    RestaurantName:
                       type: string
       operationId: get-restaurant-get_all_restaurants
       description: Get all restaurants in the database
@@ -268,6 +268,9 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  RestaurantName:
+                    type: string
       operationId: get-customer-get_a_restaurant-restaurant_id
       description: get a restaurant with restaurant Id
   '/customer/get_cart/{customer_id}/{cart_id}':
@@ -368,6 +371,7 @@ paths:
             application/json:
               schema:
                 type: number
+              examples: {}
       operationId: get-customer-get_cur_total_price-customer_id-cart_id
       description: Customers want to get the current total price of the cart
   '/customer/set_tip/{customer_id}/{cart_id}':
