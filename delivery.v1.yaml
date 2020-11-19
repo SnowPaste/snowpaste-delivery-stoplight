@@ -901,7 +901,7 @@ paths:
           description: Bad Request
       operationId: put-restaurant-add_a_dish-restaurant_id-dish_id
       description: Add a dish to a restaurant
-  '/customer/delete_a_dish/{customer_id}/{dish_id}':
+  '/customer/{customer_id}/delete_a_dish/{dish_id}':
     parameters:
       - schema:
           type: string
