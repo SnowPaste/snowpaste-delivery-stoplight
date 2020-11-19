@@ -1225,6 +1225,39 @@ paths:
           description: Not Found
       operationId: delete-restaurant-delete_a_dish-restaurant_id-dish_id
       description: Delete a dish from the dishes provided by a restaurant
+  /driver/add_new_driver:
+    post:
+      summary: add a new driver
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+      operationId: post-driver-add_new_driver
+      description: Add new driver
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                driver_id:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                phone_number:
+                  type: string
+                car_maker:
+                  type: string
+                car_model:
+                  type: string
+                car_license:
+                  type: string
+        description: Information about the new driver
 components:
   schemas: {}
   securitySchemes:
