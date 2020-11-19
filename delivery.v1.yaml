@@ -1258,6 +1258,29 @@ paths:
                 car_license:
                   type: string
         description: Information about the new driver
+  '/driver/delete_a_driver/{driver_id}':
+    parameters:
+      - schema:
+          type: string
+        name: driver_id
+        in: path
+        required: true
+    delete:
+      summary: delete a driver
+      tags:
+        - driver
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '404':
+          description: Not Found
+      operationId: delete-driver-delete_a_driver-driver_id
+      description: Delete a driver
 components:
   schemas: {}
   securitySchemes:
