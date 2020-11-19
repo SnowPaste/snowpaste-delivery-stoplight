@@ -6,7 +6,7 @@ info:
 servers:
   - url: 'http://localhost:5000'
 paths:
-  '/driver/take_an_order/{driver_id}/{order_id}':
+  '/driver/{driver_id}/take_an_order/{order_id}':
     parameters:
       - schema:
           type: string
@@ -27,7 +27,7 @@ paths:
           description: OK
       operationId: post-driver-take_an_order-driver_id-order_id
       description: A driver takes a new order. Add the new order to the driver's current order list.
-  '/driver/mark_a_completed_order/{driver_id}/{order_id}':
+  '/driver/{driver_id}/mark_a_completed_order/{order_id}':
     parameters:
       - schema:
           type: string
@@ -77,7 +77,7 @@ paths:
               examples: {}
       operationId: get-order-get_order_status-order_id
       description: To get the current status of an order
-  '/order/get_order_est_deliver_time/{order_id}':
+  '/order/{order_id}/get_order_est_deliver_time':
     parameters:
       - schema:
           type: string
@@ -100,11 +100,16 @@ paths:
                     type: integer
       operationId: get-order-get_order_est_deliver_time-order_id
       description: Get the estimated deliver time of the order
-  '/driver/set_order_status_delivered/{order_id}':
+  '/driver/{driver_id}/set_order_status_delivered/{order_id}':
     parameters:
       - schema:
           type: string
         name: order_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: driver_id
         in: path
         required: true
     put:
@@ -118,11 +123,16 @@ paths:
           description: OK
         '403':
           description: Forbidden
-  '/restaurant/set_order_status_preparing/{order_id}':
+  '/restaurant/{restaurant_id}/set_order_status_preparing/{order_id}':
     parameters:
       - schema:
           type: string
         name: order_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: restaurant_id
         in: path
         required: true
     put:
@@ -136,11 +146,16 @@ paths:
           description: Bad Request
       operationId: put-restaurant-set_order_status-order_id
       description: 'A restaurant takes an order, and set the status of the order ot be PREPARING'
-  '/driver/set_order_status_picked_up/{order_id}':
+  '/driver/{driver_id}/set_order_status_picked_up/{order_id}':
     parameters:
       - schema:
           type: string
         name: order_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: driver_id
         in: path
         required: true
     put:
@@ -154,7 +169,7 @@ paths:
           description: Bad Request
       operationId: put-driver-set_order_status_picked_up-order_id
       description: 'A driver picked up an order, and set the status of the order from WAITING_FOR_DRIVER to be PICKED UP'
-  /restaurant/set_order_status_waiting:
+  '/restaurant/{restaurant_id}/set_order_status_waiting/{order_id}':
     put:
       summary: restaurant set the status of an order to be WAITING_FOR_DRIVER
       tags:
@@ -166,7 +181,18 @@ paths:
           description: Bad Request
       operationId: put-restaurant-set_order_status_waiting
       description: 'A restaurant finished the order, and set the order status from PREPARING to be WAITING_FOR_DRIVER'
-  '/customer/cancel_order/{customer_id}/{order_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: order_id
+        in: path
+        required: true
+  '/customer/{customer_id}/cancel_order/{order_id}':
     parameters:
       - schema:
           type: string
@@ -380,7 +406,7 @@ paths:
           description: Bad Request
       operationId: delete-order-delete_order-order_id
       description: Delete an order
-  '/customer/make_order/{customer_id}/{restaurant_id}':
+  '/customer/{customer_id}/make_order/{restaurant_id}':
     parameters:
       - schema:
           type: string
@@ -393,7 +419,7 @@ paths:
         in: path
         required: true
     post:
-      summary: customer make an order
+      summary: customer make an order to a restaurant
       tags:
         - customer
       responses:
@@ -402,7 +428,7 @@ paths:
         '403':
           description: Forbidden
       operationId: post-customer-make_order-customer_id-customer_id-restaurant_id-restaurant_id
-      description: Customer make an order
+      description: Customer make an order to a restaurant
   '/driver/update_a_driver/{driver_id}':
     parameters:
       - schema:
@@ -440,13 +466,8 @@ paths:
                 car_licence:
                   type: string
         description: 'Body includes all the information entries could be updated. '
-  '/customer/add_customer/{customer_id}':
-    parameters:
-      - schema:
-          type: string
-        name: customer_id
-        in: path
-        required: true
+  /customer/add_customer:
+    parameters: []
     post:
       summary: add a customer
       tags:
@@ -673,7 +694,7 @@ paths:
                       type: string
                     zip:
                       type: string
-  '/customer/delete_address/{customer_id}/{address_id}':
+  '/customer/{customer_id}/delete_address/{address_id}':
     parameters:
       - schema:
           type: string
@@ -798,7 +819,7 @@ paths:
                         zip:
                           type: string
         description: New information of the credit card
-  '/customer/delete_credit_card/{customer_id}/{credit_card_id}':
+  '/customer/{customer_id}/delete_credit_card/{credit_card_id}':
     parameters:
       - schema:
           type: string
@@ -822,7 +843,7 @@ paths:
       operationId: delete-customer-delete_credit_card-customer_id
       description: Delete a credit card
       parameters: []
-  '/dish/get_dish/{dish_id}}':
+  '/dish/get_dish/{dish_id}':
     parameters:
       - schema:
           type: string
@@ -855,7 +876,7 @@ paths:
                     type: number
       operationId: get-dish-get_dish-dish_id
       description: Get a dish
-  '/customer/add_a_dish_to_cart/{customer_id}/{dish_id}':
+  '/customer/{customer_id}/add_a_dish_to_cart/{dish_id}':
     parameters:
       - schema:
           type: string
@@ -878,7 +899,7 @@ paths:
           description: Bad Request
       operationId: put-customer-add_a_dish_to_cart-customer_id-dish_id
       description: Customer add a dish to their cart
-  '/restaurant/add_a_dish/{restaurant_id}/{dish_id}':
+  '/restaurant/{restaurant_id}/add_a_dish/{dish_id}':
     parameters:
       - schema:
           type: string
@@ -990,7 +1011,7 @@ paths:
                     type: string
       operationId: get-customer-get_a_restaurant-restaurant_id
       description: get a restaurant with restaurant Id
-  '/customer/get_cart/{customer_id}/{cart_id}':
+  '/customer/{customer_id}/get_cart/{cart_id}':
     parameters:
       - schema:
           type: string
@@ -1017,7 +1038,7 @@ paths:
           description: Not Found
       operationId: get-customer-get_cart-cart_id
       description: get a cart object from a customer
-  '/customer/update_cart/{customer_id}/{cart_id}':
+  '/customer/{customer_id}/update_cart/{cart_id}':
     parameters:
       - schema:
           type: string
@@ -1038,7 +1059,7 @@ paths:
       description: A customer wants to update the cart object
       tags:
         - customer
-  '/customer/get_cart_items/{customer_id}/{cart_id}':
+  '/customer/{customer_id}/get_cart_items/{cart_id}':
     parameters:
       - schema:
           type: string
@@ -1065,7 +1086,7 @@ paths:
                   type: object
       operationId: get-customer-get_cart_items-customer_id-cart_id
       description: A customer wants to get all items in the cart
-  '/customer/get_cur_total_price/{customer_id}/{cart_id}':
+  '/customer/{customer_id}/get_cur_total_price/{cart_id}':
     parameters:
       - schema:
           type: string
@@ -1091,7 +1112,7 @@ paths:
               examples: {}
       operationId: get-customer-get_cur_total_price-customer_id-cart_id
       description: Customers want to get the current total price of the cart
-  '/customer/set_tip/{customer_id}/{cart_id}':
+  '/customer/{customer_id}/set_tip/{cart_id}':
     parameters:
       - schema:
           type: string
@@ -1123,7 +1144,7 @@ paths:
             type: number
           in: query
           name: tip
-  '/customer/remove_dish/{customer_id}/{cart_id}/{dish_id}':
+  '/customer/{customer_id}/remove_dish/cart_id/{cart_id}/dish_id/{dish_id}':
     parameters:
       - schema:
           type: string
@@ -1149,15 +1170,20 @@ paths:
       description: Customer wants to remove a dish from the current cart
       tags:
         - customer
-  '/customer/empty_cart/{customer_id}':
+  '/customer/{customer_id}/empty_cart/{cart_id}':
     parameters:
       - schema:
           type: string
         name: customer_id
         in: path
         required: true
+      - schema:
+          type: string
+        name: cart_id
+        in: path
+        required: true
     put:
-      summary: ''
+      summary: customer empty a cart
       operationId: put-customer-empty_cart-customer_id
       responses:
         '200':
@@ -1178,10 +1204,59 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       tags:
         - restaurant
       description: Restaurant wants to update its info
-  '/restaurant/finish_order/{restaurant_id}/{order_id}':
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_address:
+                  type: string
+                name:
+                  type: string
+                address:
+                  type: object
+                  properties:
+                    address1:
+                      type: string
+                    address2:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zip:
+                      type: string
+                phone:
+                  type: string
+                start_time:
+                  type: number
+                end_time:
+                  type: string
+                cuisine:
+                  type: string
+                menu:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      price:
+                        type: number
+                      description:
+                        type: string
+                      pricture:
+                        type: string
+                      rating:
+                        type: number
+        description: Information needed for updating a restaurant
+  '/restaurant/{restaurant_id}/finish_order/{order_id}':
     parameters:
       - schema:
           type: string
@@ -1202,7 +1277,7 @@ paths:
       description: Restaurant wants to finish an order
       tags:
         - restaurant
-  '/restaurant/delete_a_dish/{restaurant_id}/{dish_id}':
+  '/restaurant/{restaurant_id}/delete_a_dish/{dish_id}':
     parameters:
       - schema:
           type: string
