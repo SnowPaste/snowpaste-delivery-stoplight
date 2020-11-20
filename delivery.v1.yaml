@@ -102,8 +102,19 @@ paths:
                 properties:
                   esitmatedDeliverTime:
                     type: integer
+        '404':
+          description: Not Found
       operationId: get-order-get_order_est_deliver_time-order_id
       description: Get the estimated deliver time of the order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estimated_deliver_time:
+                  type: string
+        description: Estimated deliver time of an order
   '/restaurant/{restaurant_id}/set_order_status_preparing/{order_id}':
     parameters:
       - schema:
