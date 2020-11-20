@@ -18,13 +18,15 @@ paths:
         name: order_id
         in: path
         required: true
-    post:
+    put:
       summary: driver takes a new order
       tags:
         - driver
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request
       operationId: post-driver-take_an_order-driver_id-order_id
       description: A driver takes a new order. Add the new order to the driver's current order list.
   '/driver/{driver_id}/mark_a_completed_order/{order_id}':
