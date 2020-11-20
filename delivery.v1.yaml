@@ -465,6 +465,8 @@ paths:
                   type: string
                 car_licence:
                   type: string
+                id:
+                  type: string
         description: 'Body includes all the information entries could be updated. '
   /customer/add_customer:
     parameters: []
