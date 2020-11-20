@@ -46,6 +46,8 @@ paths:
       responses:
         '200':
           description: OK
+        '404':
+          description: Not Found
       operationId: put-driver-mark_a_completed_order-driver_id-order_id
       description: 'A driver mark an order as completed, remove the order from the current order list and put it into complete order list'
   '/order/get_order_status/{order_id}':
