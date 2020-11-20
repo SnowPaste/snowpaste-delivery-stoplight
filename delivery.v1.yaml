@@ -102,29 +102,6 @@ paths:
                     type: integer
       operationId: get-order-get_order_est_deliver_time-order_id
       description: Get the estimated deliver time of the order
-  '/driver/{driver_id}/set_order_status_delivered/{order_id}':
-    parameters:
-      - schema:
-          type: string
-        name: order_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: driver_id
-        in: path
-        required: true
-    put:
-      summary: driver set the order status to be DELIVERED
-      tags:
-        - driver
-      operationId: put-driver-set_order_status-order_id
-      description: 'A driver delivered an order, and set the order status from PRICKED_UP to DELIVERED.'
-      responses:
-        '200':
-          description: OK
-        '403':
-          description: Forbidden
   '/restaurant/{restaurant_id}/set_order_status_preparing/{order_id}':
     parameters:
       - schema:
