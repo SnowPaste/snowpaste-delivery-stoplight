@@ -621,7 +621,7 @@ paths:
         in: path
         required: true
     put:
-      summary: ''
+      summary: add an address
       operationId: put-customer-add_address-customer_id
       responses:
         '200':
@@ -724,7 +724,7 @@ paths:
         in: path
         required: true
     put:
-      summary: ''
+      summary: add credit card
       operationId: put-customer-add_credit_card-customer_id
       responses:
         '200':
@@ -765,6 +765,8 @@ paths:
                         zip:
                           type: string
         description: Information needed for a CreditCard
+      tags:
+        - customer
   '/customer/{customer_id}/update_card/{card_id}':
     parameters:
       - schema:
@@ -937,7 +939,7 @@ paths:
         in: path
         required: true
     put:
-      summary: ''
+      summary: remove a dish from cart
       operationId: put-customer-customer_id-delete_a_dish-dish_id
       responses:
         '200':
@@ -945,6 +947,8 @@ paths:
         '400':
           description: Bad Request
       description: Remove a dish from a customer's cart
+      tags:
+        - customer
   /restaurant/get_all_restaurants:
     get:
       summary: get all restaurants
@@ -1064,7 +1068,7 @@ paths:
         in: path
         required: true
     put:
-      summary: ''
+      summary: customer sets tip
       operationId: put-customer-customer_id-set_tip
       responses:
         '200':
@@ -1078,6 +1082,8 @@ paths:
             schema:
               type: number
         description: tip amount
+      tags:
+        - customer
   '/customer/{customer_id}/empty_cart':
     parameters:
       - schema:
