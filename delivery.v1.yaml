@@ -1039,27 +1039,6 @@ paths:
           description: Not Found
       operationId: get-customer-get_cart-cart_id
       description: get a cart object from a customer
-  '/customer/{customer_id}/update_cart/{cart_id}':
-    parameters:
-      - schema:
-          type: string
-        name: cart_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: customer_id
-        in: path
-        required: true
-    put:
-      summary: customer updates a cart
-      operationId: put-customer-update_cart-cart_id
-      responses:
-        '200':
-          description: OK
-      description: A customer wants to update the cart object
-      tags:
-        - customer
   '/customer/{customer_id}/set_tip':
     parameters:
       - schema:
