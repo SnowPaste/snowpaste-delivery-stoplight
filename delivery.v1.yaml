@@ -949,7 +949,7 @@ paths:
       description: Remove a dish from a customer's cart
       tags:
         - customer
-  /restaurant/get_all_restaurants:
+  /restaurants:
     get:
       summary: get all restaurants
       responses:
@@ -1079,92 +1079,6 @@ paths:
       description: Customer wants to empty the current cart
       tags:
         - customer
-  '/restaurant/update_restaurant/{restaurant_id}':
-    parameters:
-      - schema:
-          type: string
-        name: restaurant_id
-        in: path
-        required: true
-    put:
-      summary: update a restaurant
-      operationId: put-restaurant-update_restaurant-restaurant_id
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Bad Request
-      tags:
-        - restaurant
-      description: Restaurant wants to update its info
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email_address:
-                  type: string
-                name:
-                  type: string
-                address:
-                  type: object
-                  properties:
-                    address1:
-                      type: string
-                    address2:
-                      type: string
-                    city:
-                      type: string
-                    state:
-                      type: string
-                    zip:
-                      type: string
-                phone:
-                  type: string
-                start_time:
-                  type: number
-                end_time:
-                  type: string
-                cuisine:
-                  type: string
-                menu:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      price:
-                        type: number
-                      description:
-                        type: string
-                      pricture:
-                        type: string
-                      rating:
-                        type: number
-        description: Information needed for updating a restaurant
-  '/restaurant/{restaurant_id}/finish_order/{order_id}':
-    parameters:
-      - schema:
-          type: string
-        name: restaurant_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: order_id
-        in: path
-        required: true
-    post:
-      summary: restaurant finishes order
-      operationId: post-restaurant-finish_order-restaurant_id-order_id
-      responses:
-        '200':
-          description: OK
-      description: Restaurant wants to finish an order
-      tags:
-        - restaurant
   '/restaurant/{restaurant_id}/delete_a_dish/{dish_id}':
     parameters:
       - schema:
@@ -1294,6 +1208,22 @@ paths:
               examples: {}
       operationId: get-customer-customer_id
       description: Get customer information
+  '/restaurant/delete_restaurant/{restaurant_id}':
+    parameters:
+      - schema:
+          type: string
+        name: restaurant_id
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-restaurant-delete_restaurant-restaurant_id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      description: Delete a restaurant
 components:
   schemas: {}
   securitySchemes:
