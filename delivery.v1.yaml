@@ -1187,7 +1187,7 @@ paths:
         '404':
           description: Not Found
       operationId: delete-restaurant-delete_a_dish-restaurant_id-dish_id
-      description: Delete a dish from the dishes provided by a restaurant
+      description: Delete a dish provided by a restaurant
   /driver/add_new_driver:
     post:
       summary: add a new driver
